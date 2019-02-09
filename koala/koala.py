@@ -17,7 +17,7 @@ subparser = parser.add_subparsers(help='commands')
 
 update_parser = subparser.add_parser('update',
     help='Updates local databases')
-update_parser.add_argument('db', action='store', choices=('rir','geo','all'))
+update_parser.add_argument('update', action='store_true')
 
 subnet_parser = subparser.add_parser('subnet',
     help='IP subnet information')
@@ -38,30 +38,13 @@ if __name__ == '__main__':
     if not exists(local_db_path):
         makedirs(local_db_path)
     
-    try:
-        Info(local_db_path, args.info).show()
-        exit(0)
-    except AttributeError:
-        pass
-
-    try:
-        if args.db == 'all':
-            Update(local_db_path).all()
-        elif args.db == 'rir':
-            Update(local_db_path).rir()
-        elif args.db == 'geoip2':
-            Update(local_db_path).geoip2()
-        exit(0)
-    except AttributeError:
-        pass
-
-    try:
+    if hasattr(args, 'update'):
+        Update(local_db_path).all()
+    elif hasattr(args, 'subnet'):
         Subnet(args.subnet).show()
-        exit(0)
-    except AttributeError:
-        pass
-    
-    try:
+    elif hasattr(args, 'info'):
+        Info(local_db_path, args.info).show()
+    elif hasattr(args, 'rdap'):
         RDAP(args.rdap).show()
-    except AttributeError:
-        pass
+    
+    exit(0)

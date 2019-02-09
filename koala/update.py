@@ -25,6 +25,7 @@ class Update(object):
     
     def rir(self):
         for r in self.rir_urls:
+            print(f'Downloading {r}')
             data = get(self.rir_urls[r])
             with open(join(self.path,r),'wb') as f:
                 f.write(data.content)
@@ -32,6 +33,7 @@ class Update(object):
     def geo(self):
         for g in self.geo_urls:
             n = self.geo_urls[g].split('/')[-1]
+            print(f'Downloading {n}')
             data = get(self.geo_urls[g])
             with open(join(self.path,n),'wb') as f:
                 f.write(data.content)
@@ -45,5 +47,6 @@ class Update(object):
             unlink(join(self.path, n))
 
     def all(self):
+        print(f'Updating local databases: {self.path}')
         self.rir()
         self.geo()
