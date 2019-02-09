@@ -18,7 +18,7 @@ class Update(object):
             'arin': 'https://ftp.arin.net/pub/stats/arin/delegated-arin-extended-latest',
             'ripe': 'https://ftp.ripe.net/pub/stats/ripencc/delegated-ripencc-latest'
         }
-        self.geolite2_urls = {
+        self.geo_urls = {
             'city': 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz',
             'asn': 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN.tar.gz'
         }
@@ -29,10 +29,10 @@ class Update(object):
             with open(join(self.path,r),'wb') as f:
                 f.write(data.content)
 
-    def geoip2(self):
-        for g in self.geolite2_urls:
-            n = self.geolite2_urls[g].split('/')[-1]
-            data = get(self.geolite2_urls[g])
+    def geo(self):
+        for g in self.geo_urls:
+            n = self.geo_urls[g].split('/')[-1]
+            data = get(self.geo_urls[g])
             with open(join(self.path,n),'wb') as f:
                 f.write(data.content)
             t = taropen(join(self.path, n), 'r')
@@ -46,4 +46,4 @@ class Update(object):
 
     def all(self):
         self.rir()
-        self.geoip2()
+        self.geo()

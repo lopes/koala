@@ -4,9 +4,10 @@ from os.path import expanduser, exists, join
 from os import makedirs
 from argparse import ArgumentParser
 
-from info import Info
+from subnet import Subnet
 from update import Update
-from check import Check
+from info import Info
+from rdap import RDAP
 
 
 local_db_path = join(expanduser('~'), '.koala')
@@ -16,17 +17,19 @@ subparser = parser.add_subparsers(help='commands')
 
 update_parser = subparser.add_parser('update',
     help='Updates local databases')
-update_parser.add_argument('db', action='store', 
-    choices=('rir','geoip2','all'))
+update_parser.add_argument('db', action='store', choices=('rir','geo','all'))
+
+subnet_parser = subparser.add_parser('subnet',
+    help='IP subnet information')
+subnet_parser.add_argument('subnet', action='store', default=None)
 
 info_parser = subparser.add_parser('info',
-    help='Shows info about IP network')
-info_parser.add_argument('info_ip', action='store', default=None)
+    help='Checks local information about IP addresses')
+info_parser.add_argument('info', action='store', default=None)
 
-check_parser = subparser.add_parser('check',
-    help='Checks information about IP addresses')
-check_parser.add_argument('check_value', action='store', 
-    default=None)
+rdap_parser = subparser.add_parser('rdap',
+    help='Retrieves RDAP information from the internet')
+rdap_parser.add_argument('rdap', action='store', default=None)
 
 args = parser.parse_args()
 
@@ -36,7 +39,7 @@ if __name__ == '__main__':
         makedirs(local_db_path)
     
     try:
-        Check(local_db_path, args.check_value).show()
+        Info(local_db_path, args.info).show()
         exit(0)
     except AttributeError:
         pass
@@ -51,9 +54,14 @@ if __name__ == '__main__':
         exit(0)
     except AttributeError:
         pass
+
+    try:
+        Subnet(args.subnet).show()
+        exit(0)
+    except AttributeError:
+        pass
     
     try:
-        Info(args.info_ip).show()
-        exit(0)
+        RDAP(args.rdap).show()
     except AttributeError:
         pass
