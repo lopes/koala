@@ -43,8 +43,14 @@ if __name__ == '__main__':
     elif hasattr(args, 'subnet'):
         Subnet(args.subnet).show()
     elif hasattr(args, 'info'):
-        Info(local_db_path, args.info).show()
+        try:
+            Info(local_db_path, args.info).show()
+        except ValueError:
+            print('Error: IP address unrecognized (do not use CIDR here)')
     elif hasattr(args, 'rdap'):
-        RDAP(args.rdap).show()
+        try:
+            RDAP(args.rdap).show()
+        except ValueError:
+            print('Error: IP address unrecognized (do not use CIDR here)')
     
     exit(0)

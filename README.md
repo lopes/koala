@@ -16,9 +16,9 @@ $ cd koala
 After that, the program is ready to be used, but to use the `info` module, first you must install the databases using the `update` module.  A list of common commands follows:
 
 ```
-$ koala.py update [rir, geo, all]
+$ koala.py update
 $ koala.py subnet 10.10.56.32/22
-$ koala.py [info, rdap] 100.45.23.89
+$ koala.py [info, rdap] 888.888.888.888
 ```
 
 ## License

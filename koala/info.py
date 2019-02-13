@@ -47,5 +47,5 @@ class Info(object):
     def show(self):
         rir = self.get_rir_info()
         geo = self.get_geo_info()
-        print('[RIR]\n\tName\t\t{}\n\tNetwork\t\t{}\n\tDate\t\t{}\n\tStatus\t\t{}\n'.format(rir[0], rir[1], rir[2], rir[3]))
-        print('[GEO]\n\tASN\t\t{}\n\tOrganization\t{}\n\tAddress\t\t{}, {}\n\tCoordinates\t({}, {})\n\tMap\t\t{}\n'.format(geo[0], geo[1], geo[2], geo[3], geo[4], geo[5], f'https://www.latlong.net/c/?lat={geo[4]}&long={geo[5]}'))
+        print('[RIR]\n\tName\t\t{}\n\tNetwork\t\t{}\n\tDate\t\t{}\n\tStatus\t\t{}'.format(rir[0], rir[1], rir[2], rir[3]))
+        print('[GEO]\n\tASN\t\t{}\n\tOrganization\t{}\n\tAddress\t\t{}, {}\n\tCoordinates\t({}, {})\n\tMap\t\t{}'.format(geo[0], geo[1], geo[2], geo[3], geo[4], geo[5], f'https://www.latlong.net/c/?lat={geo[4]}&long={geo[5]}'))

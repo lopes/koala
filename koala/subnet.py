@@ -23,6 +23,14 @@ class Subnet(object):
             int(self.network.broadcast_address)))
         print('# addresses\t{}'.format(self.network.num_addresses))
         print('Reverse pointer\t{}'.format(self.address.reverse_pointer))
-
-        if self.address.is_private:
-            print('Private addr')
+        print('({}) Multicast   ({}) Private    ({}) Global     ({}) Unspecified'.format(
+            'x' if self.address.is_multicast else ' ', 
+            'x' if self.address.is_private else ' ', 
+            'x' if self.address.is_global else ' ', 
+            'x' if self.address.is_unspecified else ' '
+        ))
+        print('({}) Reserved    ({}) Loopback   ({}) Link local'.format(
+            'x' if self.address.is_reserved else ' ',
+            'x' if self.address.is_loopback else ' ',
+            'x' if self.address.is_link_local else ' '
+        ))
