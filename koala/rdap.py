@@ -8,7 +8,10 @@ from ipwhois import IPWhois
 class RDAP(object):
     def __init__(self, addr):
         self.addr = ip_address(addr)
-        self.rdap = self.get_rdap_info()
+        if self.addr.is_global:
+            self.rdap = self.get_rdap_info()
+        else:
+            raise IOError
     
     def get_rdap_info(self):
         return IPWhois(str(self.addr)).lookup_rdap()
@@ -31,12 +34,9 @@ class RDAP(object):
         print('[NETWORK]')
         for k,v in net.items():
             if k in properties:
-                if k == 'status':
-                    try:
-                        for i in v:
-                            print('\t{: <20}{}'.format('Status', i))
-                    except TypeError:
-                        print('\t{: <20}{}'.format('Status', '-'))
+                if k == 'status' and v:
+                    for i in v:
+                        print('\t{: <20}{}'.format('Status', i))
                 elif k == 'links':
                     for i in v:
                         print('\t{: <20}{}'.format('Link', i))
@@ -52,29 +52,18 @@ class RDAP(object):
             print(f'[{k}]')
             for ok,ov in v.items():
                 if ok in properties:
-                    if ok == 'entities' or ok == 'links':
-                        try:
-                            for i in ov:
-                                print('\t{: <20}{}'.format(properties[ok], i))
-                        except TypeError:
-                            print('\t{: <20}{}'.format(properties[ok], '-'))
-                    elif ok == 'contact':
+                    if (ok == 'entities' or ok == 'links') and ov:
+                        for i in ov:
+                            print('\t{: <20}{}'.format(properties[ok], i))
+                    elif ok == 'contact' and ov:
                         for ook,oov in ov.items():
                             if ook in properties:
-                                if ook == 'email':
-                                    try:
-                                        for i in oov:
-                                            print('\t{: <20}{}'.format(properties[ook], i['value']))
-                                    except TypeError:
-                                        print('\t{: <20}{}'.format(properties[ook], '-'))
-                                else:
-                                    print('\t{: <20}{}'.format(properties[ook], oov))
-                    elif ok == 'roles':
-                        try:
-                            for i in ov:
-                                print('\t{: <20}{}'.format(properties[ok], i))
-                        except TypeError:
-                            print('\t{: <20}{}'.format(properties[ok], '-'))
+                                if ook == 'email' and oov:
+                                    for i in oov:
+                                        print('\t{: <20}{}'.format(properties[ook], i['value']))
+                    elif ok == 'roles' and ov:
+                        for i in ov:
+                            print('\t{: <20}{}'.format(properties[ok], i))
                     else:
                         print('\t{: <20}{}'.format(properties[ok], ov))
     
