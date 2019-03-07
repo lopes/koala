@@ -34,3 +34,4 @@ class Subnet(object):
             'x' if self.address.is_loopback else ' ',
             'x' if self.address.is_link_local else ' '
         ))
+        
