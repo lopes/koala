@@ -8,6 +8,7 @@ Koala comes with the following modules:
 * `proxy`: sets OS proxy according to configuration file. (currently works only with Windows)
 * `iron`: clean up a proxy domain list (IronPort compliant).
 * `visio`: converts MS-Visio files to PDF or HTML ones. (only works with Windows)
+* `qrq`: performs pre difined IBM QRadar AQL queries.
 
 ## Usage
 First, clone Koala and install its Python dependencies:

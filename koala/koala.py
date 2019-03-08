@@ -10,15 +10,13 @@ from whois import RDAP
 from iron import Iron
 from proxy import Proxy
 from visio import Visio
-
-from update import Update
-from info import Info
+from qrq import QRadarQuery
 
 
 conf_file = join(expanduser('~'), '.koala.conf')
 local_db_path = join(expanduser('~'), '.koala')
 
-parser = ArgumentParser(description='IP information')
+parser = ArgumentParser(description='CORS\'s Swiss Army Knife')
 subparser = parser.add_subparsers(help='commands')
 
 subnet_parser = subparser.add_parser('subnet',
@@ -41,6 +39,10 @@ visio_parser = subparser.add_parser('visio',
     help='Exports MS-Visio files to PDF in batch')
 visio_parser.add_argument('visio', action='store_true', default=False)
 
+qrq_parser = subparser.add_parser('qrq',
+    help='Performs pre-defined AQL queries in IBM QRadar')
+qrq_parser.add_argument('qrquery', action='store', default=None)
+
 args = parser.parse_args()
 conf = ConfigParser()
 conf.read(conf_file)
@@ -56,6 +58,12 @@ if __name__ == '__main__':
     elif hasattr(args, 'visio'):
         Visio(conf['VISIO']['format'], conf['VISIO']['erase'],
             conf['VISIO']['source'], conf['VISIO']['destination']).apply()
+    elif hasattr(args, 'qrquery'):
+        qrq = QRadarQuery(conf['QRQ']['proto'], conf['QRQ']['server'], 
+            conf['QRQ']['path'], conf['QRQ']['token'], 
+            conf['QRQ'][args.qrquery], conf['QRQ']['retry'], 
+            conf['QRQ']['sleep'])
+        print(qrq.results)
         
     elif hasattr(args, 'proxy_id'):
         try:
@@ -76,5 +84,4 @@ if __name__ == '__main__':
             values = [v[0] for v in conf.items('PROXY')]
             values.remove('proxy_override')  # comes with DEFAULT section
             print(values, '\nOr use \'off\' to disable proxy.')
-
     exit(0)
