@@ -65,6 +65,8 @@ class Proxy(object):
     def apply(self):
         if self.os == 'Windows':
             self.win_apply()
+        else:
+            print(f'Error: unsupported OS: {self.os}')
     
     def show(self):
         if self.os == 'Windows':
@@ -73,20 +75,5 @@ class Proxy(object):
                 print(f'EXCEPTIONS\n{QueryValueEx(WIN_INTERNET_SETTINGS,"ProxyOverride")[0]}')
             else:
                 print('Proxy is disabled.')
-
-
-# if __name__ == '__main__':
-#     try:
-#         proxy = argv[1]
-#     except IndexError:
-#         print(f'Enable....: {QueryValueEx(WIN_INTERNET_SETTINGS,"ProxyEnable")[0]}')
-#         print(f'Server....: {QueryValueEx(WIN_INTERNET_SETTINGS,"ProxyServer")[0]}')
-#         print(f'Exceptions: {QueryValueEx(WIN_INTERNET_SETTINGS,"ProxyOverride")[0]}')
-#         exit(0)
-    
-#     try:
-        
-#     except KeyError:
-#         print(f'Registered proxies: {PROXIES.keys()}')
-#         exit(1)
-#     exit(0)
+        else:
+            print(f'Error: unsupported OS: {self.os}')

@@ -6,9 +6,10 @@ from argparse import ArgumentParser
 from configparser import ConfigParser
 
 from subnet import Subnet
-from rdap import RDAP
+from whois import RDAP
 from iron import Iron
 from proxy import Proxy
+from visio import Visio
 
 from update import Update
 from info import Info
@@ -17,7 +18,6 @@ from info import Info
 conf_file = join(expanduser('~'), '.koala.conf')
 local_db_path = join(expanduser('~'), '.koala')
 
-# Argparse
 parser = ArgumentParser(description='IP information')
 subparser = parser.add_subparsers(help='commands')
 
@@ -25,9 +25,9 @@ subnet_parser = subparser.add_parser('subnet',
     help='IP subnet calculator')
 subnet_parser.add_argument('subnet_ip', action='store', default=None)
 
-rdap_parser = subparser.add_parser('rdap',
-    help='Retrieves RDAP information from the internet')
-rdap_parser.add_argument('rdap_ip', action='store', default=None)
+rdap_parser = subparser.add_parser('whois',
+    help='Retrieves whois information from the internet')
+rdap_parser.add_argument('whois_ip', action='store', default=None)
 
 iron_parser = subparser.add_parser('iron',
     help='IronPort domain list clean-up')
@@ -39,10 +39,9 @@ proxy_parser.add_argument('proxy_id', action='store', default=None)
 
 visio_parser = subparser.add_parser('visio',
     help='Exports MS-Visio files to PDF in batch')
-# visio_parser.add_argument('visio', action='store', default=None)
+visio_parser.add_argument('visio', action='store_true', default=False)
 
 args = parser.parse_args()
-
 conf = ConfigParser()
 conf.read(conf_file)
 
@@ -50,10 +49,13 @@ conf.read(conf_file)
 if __name__ == '__main__':
     if hasattr(args, 'subnet_ip'):
         Subnet(args.subnet_ip).show()
-    elif hasattr(args, 'rdap_ip'):
-        RDAP(args.rdap_ip).show()
+    elif hasattr(args, 'whois_ip'):
+        RDAP(args.whois_ip).show()
     elif hasattr(args, 'iron_file'):
         Iron(args.iron_file).show()
+    elif hasattr(args, 'visio'):
+        Visio(conf['VISIO']['format'], conf['VISIO']['erase'],
+            conf['VISIO']['source'], conf['VISIO']['destination']).apply()
         
     elif hasattr(args, 'proxy_id'):
         try:
@@ -70,9 +72,9 @@ if __name__ == '__main__':
                 proxy.apply()
                 proxy.show()
         except KeyError:
-            print(f'Error: unknown proxy id {args.proxy_id}\nTip: ', end='')
+            print(f'ERROR: unknown proxy id {args.proxy_id}\nTIP: ', end='')
             values = [v[0] for v in conf.items('PROXY')]
-            values.remove('proxy_override')
+            values.remove('proxy_override')  # comes with DEFAULT section
             print(values, '\nOr use \'off\' to disable proxy.')
 
     exit(0)

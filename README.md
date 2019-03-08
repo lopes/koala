@@ -1,7 +1,13 @@
 # Koala
 IP information for NSOC teams.  Koala was written at [Cemig](http://www.cemig.com.br)'s Network and Security Operations Center (Centro de Operações de Rede e Segurança -- CORS) to assist the team in cybersecurity investigations and network management.
 
-Koala is based in "modules" and the first ones are `update`, `subnet`, `info`, and `rdap`.  The first one downloads databases with IP information used by the `info` module to present them to the user.  `subnet` module performs basic IP subnet calculations, and the `rdap` module does RDAP queries to retrieve IP information.
+Koala comes with the following modules:
+
+* `subnet`: performs basic IP subnet calculations.
+* `whois`: discover many information about an IP address.
+* `proxy`: sets OS proxy according to configuration file. (currently works only with Windows)
+* `iron`: clean up a proxy domain list (IronPort compliant).
+* `visio`: converts MS-Visio files to PDF or HTML ones. (only works with Windows)
 
 ## Usage
 First, clone Koala and install its Python dependencies:
@@ -13,12 +19,14 @@ $ python -m pip install -r requirements.txt
 $ cd koala
 ```
 
-After that, the program is ready to be used, but to use the `info` module, first you must install the databases using the `update` module.  A list of common commands follows:
+A list of common commands follows:
 
 ```
-$ koala.py update
 $ koala.py subnet 10.10.56.32/22
-$ koala.py [info, rdap] 888.888.888.888
+$ koala.py whois 888.888.888.888
+$ koala.py proxy proxy_id
+$ koala.py iron domain_list.txt
+$ koala.py visio
 ```
 
 ## License
