@@ -11,6 +11,7 @@ from iron import Iron
 from proxy import Proxy
 from visio import Visio
 from qrq import QRadarQuery
+from abuse import Abuse
 
 
 conf_file = join(expanduser('~'), '.koala.conf')
@@ -43,6 +44,10 @@ qrq_parser = subparser.add_parser('qrq',
     help='Performs pre-defined AQL queries in IBM QRadar')
 qrq_parser.add_argument('qrquery', action='store', default=None)
 
+abuse_parser = subparser.add_parser('abuse',
+    help='Analyses messages sent to abuse boxes')
+abuse_parser.add_argument('abuse', action='store_true', default=None)
+
 args = parser.parse_args()
 conf = ConfigParser()
 conf.read(conf_file)
@@ -64,7 +69,10 @@ if __name__ == '__main__':
             conf['QRQ'][args.qrquery], conf['QRQ']['retry'], 
             conf['QRQ']['sleep'])
         print(qrq.results)
-        
+    elif hasattr(args, 'abuse'):
+        abuse = Abuse(conf['ABUSE']['server'], conf['ABUSE']['user'],
+            conf['ABUSE']['password'], conf['ABUSE']['workbox'], 
+            conf['ABUSE']['bkpbox'])
     elif hasattr(args, 'proxy_id'):
         try:
             if args.proxy_id == 'status':
@@ -73,7 +81,7 @@ if __name__ == '__main__':
                 if args.proxy_id != 'off':
                     proxy_enable = True
                     proxy_server = conf['PROXY'][args.proxy_id]
-                    proxy_override = conf['DEFAULT']['proxy_override']
+                    proxy_override = conf['PROXY_OVERRIDE']['addresses']
                     proxy = Proxy(proxy_enable, proxy_server, proxy_override)
                 else:
                     proxy = Proxy()
@@ -82,6 +90,5 @@ if __name__ == '__main__':
         except KeyError:
             print(f'ERROR: unknown proxy id {args.proxy_id}\nTIP: ', end='')
             values = [v[0] for v in conf.items('PROXY')]
-            values.remove('proxy_override')  # comes with DEFAULT section
             print(values, '\nOr use \'off\' to disable proxy.')
     exit(0)

@@ -22,8 +22,6 @@ will print the current proxy settings on screen.
 
 Based on: https://bitbucket.org/canassa/switch-proxy
 '''
-__author__ = 'José Lopes de Oliveira Júnior'
-__license__ = 'MIT'
 
 
 import ctypes
