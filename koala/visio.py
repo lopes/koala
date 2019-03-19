@@ -21,16 +21,17 @@ __license__ = 'MIT'
 __version__ = '0.11.2'
 
 
-try:
-    import win32com.client
-except ModuleNotFoundError:
-    print('ERROR: module win32com not found.\nTIP: pip install pywin32')
-    exit(1)
-
 from os import access, walk, R_OK, W_OK, remove
 from os.path import abspath, join
 from re import compile, match, sub, IGNORECASE
 from shutil import rmtree
+
+from koala import KoalaError
+
+try:
+    import win32com.client
+except ModuleNotFoundError:
+    raise KoalaError('module win32com not found')
 
 
 class Visio(object):
@@ -44,11 +45,9 @@ class Visio(object):
         # win32com doesn't throw exceptions properly, so 
         # must perform these checks.  sorry, duck typing!
         if not access(self.source, R_OK):
-            print(f'ERROR: not readable: {self.source}')
-            exit(1)
+            KoalaError(f'not readable: {self.source}')
         if not access(self.destination, W_OK):
-            print(f'ERROR: not writable: {self.destination}')
-            exit(1)
+            KoalaError(f'not writable: {self.destination}')
 
     def vsd2pdf(self, vsd, pdf):
         visio = win32com.client.Dispatch('Visio.InvisibleApp')

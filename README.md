@@ -9,7 +9,7 @@ Koala comes with the following modules:
 * `iron`: clean up a proxy domain list (IronPort compliant).
 * `visio`: converts MS-Visio files to PDF or HTML ones. (only works with Windows)
 * `qrq`: performs pre difined IBM QRadar AQL queries.
-* `abuse`: analyses an abuse box to retrieve header information of messages
+* `abuse`: analyses an abuse box to retrieve header information of messages. (under development)
 
 ## Usage
 First, clone Koala and install its Python dependencies:

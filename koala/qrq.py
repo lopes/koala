@@ -7,6 +7,8 @@ from urllib.error import HTTPError
 from json import loads
 from time import sleep
 
+from koala import KoalaError
+
 
 '''
 Performs queries in IBM QRadar.
@@ -53,5 +55,4 @@ class QRadarQuery(object):
                     return loads(r.read())
             except HTTPError:
                 pass
-        print('Unable to retrieve results.\nSearch ID:', self.search_id)
-        exit(1)
+        KoalaError(f'Can\'t retrieve results (Search ID: {self.search_id})')
