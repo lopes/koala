@@ -21,8 +21,6 @@ Before start using, you must setup at least TOKEN,
 CIDR, and SERVER constants according to your
 environment.
 '''
-__author__ = 'José Lopes'
-__license__ = 'MIT'
 
 
 class QRadarQuery(object):

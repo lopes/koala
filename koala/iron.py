@@ -9,13 +9,7 @@ and overlaps (.domain.com, sub.domain.com <-removes this).
 
 IronCleaner can also check is domains are responsive, but of course
 this can be tricky, because of false positives.
-
-Example:
-$ ironcleaner.py -i iron-passthrough.txt > new-iron-passthrough.txt
-$ ironcleaner.py -c -i iron-whitelist.txt
 '''
-__author__ = 'José Lopes de Oliveira Júnior'
-__license__ = 'MIT'
 
 
 from re import match

@@ -1,25 +1,4 @@
 #!/usr/bin/env python3
-#vsdbatch.py
-
-
-'''
-vsdbatch
-Exports multiple Visio files in batch.
-
-REQUIREMENTS
-    1. Python 3.6  -- and pip3
-    2. Pywin32  -- pip install pywin32
-    3. Visio 2013
-
-INSTALLATION
-Having all requirements satisfied, just copy this
-script to your machine and run it.
-'''
-__author__ = 'José Lopes de Oliveira Jr.'
-__copyright__ = 'Copyright 2018, Cemig'
-__license__ = 'MIT'
-__version__ = '0.11.2'
-
 
 from os import access, walk, R_OK, W_OK, remove
 from os.path import abspath, join
