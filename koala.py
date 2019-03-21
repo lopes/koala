@@ -8,7 +8,9 @@ from koala.whois import RDAP
 from koala.iron import Iron
 from koala.proxy import Proxy
 from koala.visio import Visio
-from koala.qrq import QRadarQuery
+from koala.qradar import QRadar
+from koala.prime import Prime
+
 from koala.abuse import Abuse
 
 
@@ -22,12 +24,17 @@ if __name__ == '__main__':
             Iron(args.input, args.output)
         elif args.command == 'visio':
             c = conf['VISIO']
-            Visio(c['format'], c['erase'], c['source'], c['destination']).apply()
-        elif args.command == 'qrq':
-            c = conf['QRQ']
-            qrq = QRadarQuery(c['proto'], c['server'], c['path'], c['token'], 
-                c[args.id], c['retry'], c['sleep'])
-            pprint(qrq.results)
+            Visio(c['format'], c['erase'], c['source'], 
+                c['destination']).apply()
+        elif args.command == 'qradar':
+            c = conf['QRADAR']
+            qr = QRadar(c['proto'], c['server'], c['endpoint'], c['resource'],
+                c['query'], c['token'], c[args.id], c['retry'], c['sleep'])
+            pprint(qr.results)
+        elif args.command == 'prime':
+            c = conf['PRIME']
+            print(Prime(c['proto'], c['server'], c['endpoint'], c['resource'],
+                c['query'], c['user'], c['pass']).get_data())
         elif args.command == 'abuse':
             abuse = Abuse(conf['ABUSE']['server'], conf['ABUSE']['user'],
                 conf['ABUSE']['password'], conf['ABUSE']['workbox'], 
@@ -41,7 +48,8 @@ if __name__ == '__main__':
                         proxy_enable = True
                         proxy_server = conf['PROXY'][args.id]
                         proxy_override = conf['PROXY_OVERRIDE']['addresses'] if args.id != 'burp' else '-'
-                        proxy = Proxy(proxy_enable, proxy_server, proxy_override)
+                        proxy = Proxy(proxy_enable, proxy_server, 
+                            proxy_override)
                     else:
                         proxy = Proxy()
                     proxy.apply()

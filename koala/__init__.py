@@ -29,8 +29,10 @@ argsp.add_argument('-o', '--output', required=True, help='Output file')
 
 argsp = subparsers.add_parser('visio', help='Exports multiple MS-Visio files to PDF')
 
-argsp = subparsers.add_parser('qrq', help='Performs pre-defined AQL queries in IBM QRadar')
+argsp = subparsers.add_parser('qradar', help='Performs pre-defined AQL queries in IBM QRadar')
 argsp.add_argument('id', help='AQL ID as configured in .koala.conf')
+
+argsp = subparsers.add_parser('prime', help='Performs pre-defined Cisco Prime queries')
 
 args = parser.parse_args()
 

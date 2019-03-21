@@ -5,11 +5,13 @@ Koala comes with the following modules:
 
 * `subnet`: performs basic IP subnet calculations.
 * `whois`: discover many information about an IP address.
-* `proxy`: sets OS proxy according to configuration file. (currently works only with Windows)
-* `iron`: clean up a proxy domain list (IronPort compliant).
-* `visio`: converts MS-Visio files to PDF or HTML ones. (only works with Windows)
-* `qrq`: performs pre difined IBM QRadar AQL queries.
-* `abuse`: analyses an abuse box to retrieve header information of messages. (under development)
+* `proxy`: sets OS proxy according to configuration file. _currently works only with Windows_
+* `visio`: converts MS-Visio files to PDF or HTML ones. _only works with Windows_
+* `abuse`: analyses an abuse box to retrieve header information of messages. _under development_
+* `iron`: clean up a proxy domain list. _IronPort compliant_
+* `qradar`: performs predefined AQL queries in IBM QRadar.
+* `prime`: performs predefined queries in Cisco Prime.
+
 
 ## Usage
 First, clone Koala and install its Python dependencies:
@@ -27,10 +29,11 @@ The list of commands follows:
 $ koala.py subnet 10.10.56.32/22
 $ koala.py whois 888.888.888.888
 $ koala.py proxy proxy_id
-$ koala.py iron domain_list.txt
 $ koala.py visio
-$ koala.py qrq query1
 $ koala.py abuse
+$ koala.py iron -i domain_list.txt -o new.txt
+$ koala.py qradar query1
+$ koala.py prime
 ```
 
 ## License

@@ -23,18 +23,20 @@ environment.
 '''
 
 
-class QRadarQuery(object):
-    def __init__(self, proto, server, path, token, query, retry, sleep):
-        self.url = f'{proto}://{server}/{path}'
+class QRadar(object):
+    def __init__(self, proto, server, endpoint, resource, query,
+        token, aql, retry, sleep):
+        self.url = f'{proto}://{server}/{endpoint}/{resource}'
         self.token = token
-        self.query = quote(query)
+        self.query = query
+        self.aql = quote(aql)
         self.retry = int(retry)
         self.sleep = int(sleep)
         self.search_id = self.request_search()
         self.results = self.get_results()
 
     def request_search(self):
-        req = Request(f'{self.url}?query_expression={self.query}', 
+        req = Request(f'{self.url}?{self.query}={self.aql}', 
             headers={'Content-Type':'application/json','SEC':self.token}, 
             method='POST')
         print(f'Requesting search to {self.url}')
