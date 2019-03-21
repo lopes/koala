@@ -31,6 +31,8 @@ from sys import argv
 from winreg import OpenKey, QueryValueEx, SetValueEx
 from winreg import HKEY_CURRENT_USER, KEY_ALL_ACCESS
 
+from koala import KoalaError
+
 
 WIN_INTERNET_SETTINGS = OpenKey(HKEY_CURRENT_USER, 
     r'Software\Microsoft\Windows\CurrentVersion\Internet Settings',
@@ -64,7 +66,7 @@ class Proxy(object):
         if self.os == 'Windows':
             self.win_apply()
         else:
-            print(f'Error: unsupported OS: {self.os}')
+            KoalaError(f'ERROR: unsupported OS: {self.os}')
     
     def show(self):
         if self.os == 'Windows':
@@ -74,4 +76,4 @@ class Proxy(object):
             else:
                 print('Proxy is disabled.')
         else:
-            print(f'Error: unsupported OS: {self.os}')
+            KoalaError(f'ERROR: unsupported OS: {self.os}')

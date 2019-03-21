@@ -24,7 +24,8 @@ argsp = subparsers.add_parser('proxy', help='Change proxy settings')
 argsp.add_argument('id', help='Proxy ID as configured in .koala.conf')
 
 argsp = subparsers.add_parser('iron', help='Cisco IronPort domain list clean-up')
-argsp.add_argument('file', help='File with domains')
+argsp.add_argument('-i', '--input', required=True, help='Input file with domains')
+argsp.add_argument('-o', '--output', required=True, help='Output file')
 
 argsp = subparsers.add_parser('visio', help='Exports multiple MS-Visio files to PDF')
 

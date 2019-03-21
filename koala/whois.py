@@ -12,14 +12,19 @@ from math import log2
 from ipwhois import IPWhois
 from geoip2.database import Reader
 
+from koala import KoalaError
+
 
 class RDAP(object):
     def __init__(self, addr):
-        self.addr = ip_address(addr)
+        try:
+            self.addr = ip_address(addr)
+        except ValueError:
+            raise KoalaError(f'not a valid IP address: {addr}')
         if self.addr.is_global:
             self.rdap = self.get_rdap_info()
         else:
-            raise IOError
+            raise KoalaError(f'not a global IP address: {addr}')
     
     def get_rdap_info(self):
         return IPWhois(str(self.addr)).lookup_rdap()

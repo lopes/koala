@@ -14,27 +14,36 @@ this can be tricky, because of false positives.
 
 from re import match
 
+from koala import KoalaError
+
 
 class Iron(object):
-    def __init__(self, file_domains, ):
-        with open(file_domains, 'r') as f:
-            self.domains = sorted(f.readlines()[0].split(', '))
+    def __init__(self, infile, outfile):
+        try:
+            with open(infile, 'r') as f:
+                self.domains = sorted(f.readlines()[0].split(', '))
+        except FileNotFoundError:
+            raise KoalaError(f'file not found: {infile}')
         self.stats = {
             'initial': len(self.domains), 
-            'duplicate': 0, 
-            'shadowed': 0, 
-            'overlapped': 0, 
-            'unresponsive': 0
+            'duplicate': 0, 'shadowed': 0, 
+            'overlapped': 0
         }
-        self.drop_duplicates()
-        self.drop_shadows()
-        self.drop_overlaps()
+        with open(outfile, 'w') as f:
+            self.drop_duplicates()
+            self.drop_shadows()
+            self.drop_overlaps()
+            f.write(', '.join(self.domains))
+            print(f'\nInitial: {self.stats["initial"]}, \
+Duplicate: {self.stats["duplicate"]}, Shadowed: {self.stats["shadowed"]}, \
+Overlapped: {self.stats["overlapped"]}, Now: {len(self.domains)}')
 
     def drop_duplicates(self):
         domains = self.domains.copy()
         for domain in self.domains:
             while domains.count(domain) > 1:
                 domains.remove(domain)
+                print(f'DUPLICATE: {domain}')
                 self.stats['duplicate'] += 1
         self.domains = domains
 
@@ -45,6 +54,7 @@ class Iron(object):
             if domain.startswith('.'):
                 while domains.count(domain[1:]):
                     domains.remove(domain[1:])
+                    print(f'SHADOWED: {domain[1:]}')
                     self.stats['shadowed'] += 1
         self.domains = domains
 
@@ -57,15 +67,8 @@ class Iron(object):
                 if match(f'^.+?\.{super_domain}', domain):
                     try:
                         domains.remove(domain)
+                        print(f'OVERLAPPED: {domain}')
                         self.stats['overlapped'] += 1
                     except ValueError:
-                        pass
+                        pass  # already removed
         self.domains = domains
-    
-    def show(self):
-        '''Exports the domain list in IronPort format.'''
-        print(', '.join(self.domains))
-        print(f'\n\nInitial: {self.stats["initial"]}, \
-Duplicate: {self.stats["duplicate"]}, Shadowed: {self.stats["shadowed"]}, \
-Overlapped: {self.stats["overlapped"]}, \
-Unresponsive: {self.stats["unresponsive"]}, Now: {len(self.domains)}')

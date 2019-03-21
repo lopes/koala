@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from pprint import pprint
+
 from koala import args, conf, KoalaError
 from koala.subnet import Subnet
 from koala.whois import RDAP
@@ -17,15 +19,15 @@ if __name__ == '__main__':
         elif args.command == 'whois':
             RDAP(args.ip).show()
         elif args.command == 'iron':
-            Iron(args.iron_file).show()
+            Iron(args.input, args.output)
         elif args.command == 'visio':
             c = conf['VISIO']
             Visio(c['format'], c['erase'], c['source'], c['destination']).apply()
         elif args.command == 'qrq':
             c = conf['QRQ']
             qrq = QRadarQuery(c['proto'], c['server'], c['path'], c['token'], 
-                c[args.qrquery], c['retry'], c['sleep'])
-            print(qrq.results)
+                c[args.id], c['retry'], c['sleep'])
+            pprint(qrq.results)
         elif args.command == 'abuse':
             abuse = Abuse(conf['ABUSE']['server'], conf['ABUSE']['user'],
                 conf['ABUSE']['password'], conf['ABUSE']['workbox'], 

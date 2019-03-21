@@ -53,4 +53,4 @@ class QRadarQuery(object):
                     return loads(r.read())
             except HTTPError:
                 pass
-        KoalaError(f'Can\'t retrieve results (Search ID: {self.search_id})')
+        KoalaError(f'QRadar timedout (Search ID: {self.search_id})')

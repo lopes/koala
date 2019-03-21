@@ -2,11 +2,16 @@
 
 from ipaddress import ip_address, ip_network
 
+from koala import KoalaError
+
 
 class Subnet(object):
     def __init__(self, addr):
-        self.address = ip_address(addr.split('/')[0])
-        self.network = ip_network(addr, False)
+        try:
+            self.address = ip_address(addr.split('/')[0])
+            self.network = ip_network(addr, False)
+        except ValueError:
+            raise KoalaError(f'not in CIDR format: {addr}')
     
     def show(self):
         print('Address\t\t{: <20} {:032b}'.format(str(self.address), 
