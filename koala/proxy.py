@@ -76,4 +76,4 @@ class Proxy(object):
             else:
                 print('Proxy is disabled.')
         else:
-            KoalaError(f'ERROR: unsupported OS: {self.os}')
+            raise KoalaError(f'ERROR: unsupported OS: {self.os}')

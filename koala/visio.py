@@ -24,9 +24,9 @@ class Visio(object):
         # win32com doesn't throw exceptions properly, so 
         # must perform these checks.  sorry, duck typing!
         if not access(self.source, R_OK):
-            KoalaError(f'not readable: {self.source}')
+            raise KoalaError(f'not readable: {self.source}')
         if not access(self.destination, W_OK):
-            KoalaError(f'not writable: {self.destination}')
+            raise KoalaError(f'not writable: {self.destination}')
 
     def vsd2pdf(self, vsd, pdf):
         visio = win32com.client.Dispatch('Visio.InvisibleApp')

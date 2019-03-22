@@ -10,7 +10,7 @@ Koala comes with the following modules:
 * `abuse`: analyses an abuse box to retrieve header information of messages. _under development_
 * `iron`: clean up a proxy domain list. _IronPort compliant_
 * `qradar`: performs predefined AQL queries in IBM QRadar.
-* `prime`: performs predefined queries in Cisco Prime.
+* `sync`: syncs information between 2 systems (today: Prime to NetBox).
 
 
 ## Usage
@@ -33,7 +33,7 @@ $ koala.py visio
 $ koala.py abuse
 $ koala.py iron -i domain_list.txt -o new.txt
 $ koala.py qradar query1
-$ koala.py prime
+$ koala.py sync p2n
 ```
 
 ## License

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 from pprint import pprint
+from urllib3 import disable_warnings
+from urllib3.exceptions import InsecureRequestWarning
 
 from koala import args, conf, KoalaError
 from koala.subnet import Subnet
@@ -10,6 +12,7 @@ from koala.proxy import Proxy
 from koala.visio import Visio
 from koala.qradar import QRadar
 from koala.prime import Prime
+from koala.netbox import NetBox
 
 from koala.abuse import Abuse
 
@@ -31,10 +34,21 @@ if __name__ == '__main__':
             qr = QRadar(c['proto'], c['server'], c['endpoint'], c['resource'],
                 c['query'], c['token'], c[args.id], c['retry'], c['sleep'])
             pprint(qr.results)
-        elif args.command == 'prime':
-            c = conf['PRIME']
-            print(Prime(c['proto'], c['server'], c['endpoint'], c['resource'],
-                c['query'], c['user'], c['pass']).get_data())
+        elif args.command == 'sync':
+            if args.id == 'p2n':
+                p = conf['PRIME']
+                n = conf['NETBOX']
+                disable_warnings(InsecureRequestWarning)
+                print('Retrieving devices from Cisco Prime: ', end='')
+                devices = Prime(p['proto'], p['server'], p['endpoint'], 
+                    p['resource'], p['query'], p['maxresults'], p['user'], 
+                    p['pass']).get_devices()
+                print(f'{len(devices)} devices found')
+                print('Syncing devices to NetBox')
+                NetBox(n['proto'], n['server'], n['token'], n['tag'], 
+                    n['unknown']).prime_sync(devices)
+            else:
+                raise KoalaError(f'unknown sync id: {args.id}')
         elif args.command == 'abuse':
             abuse = Abuse(conf['ABUSE']['server'], conf['ABUSE']['user'],
                 conf['ABUSE']['password'], conf['ABUSE']['workbox'], 

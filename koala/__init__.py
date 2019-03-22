@@ -32,7 +32,8 @@ argsp = subparsers.add_parser('visio', help='Exports multiple MS-Visio files to 
 argsp = subparsers.add_parser('qradar', help='Performs pre-defined AQL queries in IBM QRadar')
 argsp.add_argument('id', help='AQL ID as configured in .koala.conf')
 
-argsp = subparsers.add_parser('prime', help='Performs pre-defined Cisco Prime queries')
+argsp = subparsers.add_parser('sync', help='Synchronizes information between 2 systems')
+argsp.add_argument('id', help='Synchronization ID')
 
 args = parser.parse_args()
 

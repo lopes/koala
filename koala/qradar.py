@@ -55,4 +55,4 @@ class QRadar(object):
                     return loads(r.read())
             except HTTPError:
                 pass
-        KoalaError(f'QRadar timedout (Search ID: {self.search_id})')
+        raise KoalaError(f'QRadar timedout (Search ID: {self.search_id})')
