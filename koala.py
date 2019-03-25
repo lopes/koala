@@ -40,9 +40,11 @@ if __name__ == '__main__':
                 n = conf['NETBOX']
                 disable_warnings(InsecureRequestWarning)
                 print('Retrieving devices from Cisco Prime: ', end='')
-                devices = Prime(p['proto'], p['server'], p['endpoint'], 
-                    p['resource'], p['query'], p['maxresults'], p['user'], 
-                    p['pass']).get_devices()
+                prime = Prime(p['proto'], p['server'], p['endpoint'], 
+                    p['query'], p['maxresults'], p['user'], 
+                    p['pass'])
+                devices = prime.get_devices()
+                devices += prime.get_aps()
                 print(f'{len(devices)} devices found')
                 print('Syncing devices to NetBox')
                 NetBox(n['proto'], n['server'], n['token'], n['tag'], 
